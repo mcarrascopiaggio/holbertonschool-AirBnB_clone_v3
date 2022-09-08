@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#/usr/bin/python3
 """app pycode"""
 
 from api.v1.views import app_views
