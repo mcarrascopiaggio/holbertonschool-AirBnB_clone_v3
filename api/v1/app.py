@@ -26,3 +26,9 @@ if __name__ == "__main__":
     if not port:
         port = "5000"
     app.run(host=host, port=port, threaded=True)
+
+@app.errorhandler(404)
+def error_404(error):
+    """error 404 page not found"""
+    error = {"error": "Not found"}
+    return (jsonify(error), 404)
