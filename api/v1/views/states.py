@@ -33,16 +33,17 @@ def get_states(state_id):
 
 @app_views.route("/states/<state_id>", methods=["DELETE"])
 def delete_state(state_id):
-"""
-deletes a State object
-"""
-	state = storage.get(State, state_id)
-	if state is None:
-		abort(404)
-	else:
-		storage.delete(state)
-		storage.save()
-	return jsonify({}), 200
+    """
+    deletes a State object
+    """
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
+    else:
+        storage.delete(state)
+        storage.save()
+        return jsonify({}), 200
+
 """
 De aca saque lo de ese return que no tengo muy claro si va a funcionar
 https://stackoverflow.com/questions/45412228/sending-json-and-status-code-with-a-flask-response
