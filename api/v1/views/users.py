@@ -34,7 +34,7 @@ def get_users(user_id):
 @app_views.route("/users/<user_id>",
                  methods=["DELETE"],
                  strict_slashes=False)
-def delete_state(user_id):
+def delete_user(user_id):
     """
     deletes a user object
     """
@@ -48,7 +48,7 @@ def delete_state(user_id):
 
 
 @app_views.route("/users", methods=["POST"], strict_slashes=False)
-def post_state():
+def post_user():
     """create state with re	quest get json"""
 
     create_user = request.get_json()
@@ -66,7 +66,7 @@ def post_state():
 
 
 @app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
-def put_state(user_id):
+def put_user(user_id):
     """Updates a State object: PUT /api/v1/states/<state_id>"""
     user = storage.get(User, user_id)
     if user is None:
