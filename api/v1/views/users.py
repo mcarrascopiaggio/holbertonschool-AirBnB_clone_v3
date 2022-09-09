@@ -60,25 +60,25 @@ def post_state():
         abort(400, 'Missing password')
 
     new_user = User(**create_user)
-    storage.new(new_state)
+    storage.new(new_user)
     storage.save()
     return jsonify(new_user.to_dict()), 201
 
 
-@app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
-def put_state(state_id):
+@app_views.route("/users/<user_id>", methods=["PUT"], strict_slashes=False)
+def put_state(user_id):
     """Updates a State object: PUT /api/v1/states/<state_id>"""
-    state = storage.get(State, state_id)
-    if state is None:
+    user = storage.get(User, user_id)
+    if user is None:
         abort(404)
-    update_state = request.get_json()
-    if update_state is None:
+    update_user = request.get_json()
+    if update_user is None:
         abort(400, "Not a JSON")
     else:
-        for key, value in update_state.items():
+        for key, value in update_user.items():
             if key in ['id', 'created_at', 'updated_at']:
                 pass
             else:
-                setattr(state, key, value)
+                setattr(user, key, value)
             storage.save()
-        return jsonify(state.to_dict()), 200
+        return jsonify(user.to_dict()), 200
