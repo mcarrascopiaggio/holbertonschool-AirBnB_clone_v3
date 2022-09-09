@@ -10,7 +10,7 @@ line 4
 # from os import getenv
 
 # app = Flask(__name__)
-# app.register_blueprint(app_views) 
+# app.register_blueprint(app_views)
 
 from flask import Flask
 from models import storage
