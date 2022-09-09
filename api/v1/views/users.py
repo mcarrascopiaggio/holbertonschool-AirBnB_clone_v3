@@ -24,7 +24,7 @@ def all_users():
                  strict_slashes=False)
 def get_users(user_id):
     """Retrieves a State object: GET /api/v1/states/<state_id>"""
-    user = storage.get(State, user_id)
+    user = storage.get(User, user_id)
     if user:
         return jsonify(user.to_dict())
     else:
