@@ -67,7 +67,7 @@ def post_amenitie():
 
 @app_views.route("/amenities/<amenity_id>", methods=["PUT"],
                  strict_slashes=False)
-def put_state(amenity_id):
+def put_amenities(amenity_id):
     """Updates a Amenity object: PUT /api/v1/amenities/<amenity_id>"""
     amenitie = storage.get(Amenity, amenity_id)
     if amenitie is None:
