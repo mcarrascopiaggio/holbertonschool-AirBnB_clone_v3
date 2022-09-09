@@ -1,8 +1,7 @@
 #!/usr/bin/python3
 """
-app pycode
+Your first endpoint (route) will be to return the status of your API
 """
-
 
 from flask import Flask
 from models import storage

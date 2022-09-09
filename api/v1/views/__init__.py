@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """init"""
 
-# from api.v1.views.index import *
+from api.v1.views.index import *
 from flask import Flask, Blueprint
 
 app = Flask(__name__)
