@@ -7,6 +7,7 @@ from flask import jsonify, make_response, abort, request
 from models import storage
 from models.state import State
 
+
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
 def all_states():
     """Retrieves the list of all State objects: GET /api/v1/states"""
@@ -35,19 +36,19 @@ def delete_state(state_id):
 """
 deletes a State object
 """
-state = storage.get(State, state_id)
-if state is None:
-    abort(404)
-else:
-    storage.delete(state)
-    storage.save()
-    return jsonify({}), 200
+	state = storage.get(State, state_id)
+	if state is None:
+		abort(404)
+	else:
+		storage.delete(state)
+		storage.save()
+	return jsonify({}), 200
 """
 De aca saque lo de ese return que no tengo muy claro si va a funcionar
 https://stackoverflow.com/questions/45412228/sending-json-and-status-code-with-a-flask-response
 """
 
-
+"""
 @app_views.route("/states", strict_slashes=False, methods=["POST"])
 def post_state():
     return 
@@ -55,3 +56,4 @@ def post_state():
 
 @app_views.route("/states/<state_id>", methods=["PUT"])
 def put_state(state_id):
+"""
