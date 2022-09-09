@@ -31,7 +31,7 @@ def get_states(state_id):
         abort(404)
 
 
-@app_views.route("/states/<state_id>", methods=["DELETE"])
+@app_views.route("/states/<state_id>", methods=["DELETE"], strict_slashes=False)
 def delete_state(state_id):
     """
     deletes a State object
@@ -49,12 +49,24 @@ De aca saque lo de ese return que no tengo muy claro si va a funcionar
 https://stackoverflow.com/questions/45412228/sending-json-and-status-code-with-a-flask-response
 """
 
-"""
-@app_views.route("/states", strict_slashes=False, methods=["POST"])
+
+@app_views.route("/states", methods=["POST"], strict_slashes=False)
 def post_state():
-    return 
+	"""create state with re	quest get json"""
 
+	create_state = request.get_json()
+	
+	if create_state is None:
+		abort(400, 'Not a JSON')
+	if "name" not in create_state:
+		abort(400, 'Missing name')
 
-@app_views.route("/states/<state_id>", methods=["PUT"])
+	new_state = State(**create_state)	
+	storage.new(new_state)
+	storage.save()
+
+	return jsonify(new_state.to_dict()), 201
+"""
+@app_views.route("/states/<state_id>", methods=["PUT"], strict_slashes=False)
 def put_state(state_id):
 """
