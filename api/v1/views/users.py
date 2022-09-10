@@ -49,7 +49,7 @@ def delete_user(user_id):
 
 @app_views.route("/users", methods=["POST"], strict_slashes=False)
 def post_user():
-    """create state with re	quest get json"""
+    """create state with request get json"""
 
     create_user = request.get_json()
     if create_user is None:
