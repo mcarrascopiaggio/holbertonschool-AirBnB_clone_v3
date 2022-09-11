@@ -89,7 +89,7 @@ def put_place(place_id):
     places = storage.get("Place", place_id)
     if places is None:
         abort(404)
-    update_places = request.geit_json()
+    update_places = request.get_json()
     if update_places is None:
         abort(400, "Not a JSON")
     else:
