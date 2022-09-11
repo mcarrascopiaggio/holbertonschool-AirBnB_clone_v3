@@ -83,27 +83,20 @@ def create_place(city_id):
     return make_response(jsonify(place.to_dict()), 201)
 
 
-@app_views.route("/places/<place_id>", methods=["PUT"],
-                 strict_slashes=False)
-def update_place(place_id):
-    """Updates a City instance"""
-
-    body = request.get_json()
-    no_update = ["id", "user_id", "city_id", "created_at", "updated_at"]
-
-    if body is None:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
-
-    place = storage.get("Place", place_id)
-
-    if place is None:
+@app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
+def put_place(place_id):
+    """Updates a Place object: PUT /api/v1/places/<place_id>"""
+    places = storage.get("Place", place_id)
+    if places is None:
         abort(404)
-
-    for key, value in body.items():
-        if key not in no_update:
-            setattr(place, key, value)
-        else:
-            pass
-
-    storage.save()
-    return make_response(jsonify(place.to_dict()), 200)
+    update_places = request.geit_json()
+    if update_places is None:
+        abort(400, "Not a JSON")
+    else:
+        for key, value in update_places.items():
+            if key in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
+                pass
+            else:
+                setattr(places, key, value)
+        storage.save()
+        return jsonify(places.to_dict()), 200
