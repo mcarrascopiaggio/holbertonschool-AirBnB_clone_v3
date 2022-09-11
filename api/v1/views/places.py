@@ -55,20 +55,27 @@ def delete_place(place_id):
         return jsonify({}), 200
 
 
-@app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
-def put_place(place_id):
-    """Updates a Place object: PUT /api/v1/places/<place_id>"""
-    places = storage.get(Place, place_id)
-    if places is None:
-        abort(404)
-    update_places = request.geit_json()
-    if update_places is None:
+@app_views.route("/places/<place_id>", methods=["PUT"],
+                 strict_slashes=False)
+def update_place(place_id):
+    """Updates a City instance"""
+
+    place = request.get_json()
+    no_update = ["id", "user_id", "city_id", "created_at", "updated_at"]
+
+    if place is None:
         abort(400, "Not a JSON")
-    else:
-        for key, value in update_places.items():
-            if key in ['id', 'user_id', 'city_id', 'created_at', 'updated_at']:
-                pass
-            else:
-                setattr(places, key, value)
-        storage.save()
-        return jsonify(places.to_dict()), 200
+
+    place = storage.get("Place", place_id)
+
+    if place is None:
+        abort(404)
+
+    for key, value in body.items():
+        if key not in no_update:
+            setattr(place, key, value)
+        else:
+            pass
+
+    storage.save()
+    return jsonify(place.to_dict()), 200
