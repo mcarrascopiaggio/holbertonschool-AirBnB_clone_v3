@@ -19,7 +19,7 @@ def get_review(place_id):
     GET /api/v1/places/<place_id>/reviews
     """
     list_all_reviews = []
-    place = storage.get("Place", place_id)
+    place = storage.get(Place, place_id)
     if not place:
         abort(404)
     for review in place.reviews:
@@ -34,8 +34,8 @@ def get_review(place_id):
 def get_revieew(review_id):
     """Retrieves a Review object
     GET /api/v1/reviews/<review_id>"""
-    review = storage.get("Review", review_id)
-    if review:
-        return jsonify(review.to_dict())
-    else:
+    review = storage.get(Review, review_id)
+    if review is None:
         abort(404)
+    else:
+        return jsonify(review.to_dict())
