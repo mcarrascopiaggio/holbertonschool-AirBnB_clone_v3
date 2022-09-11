@@ -79,3 +79,29 @@ def update_review(review_id):
                 setattr(review, key, value)
         storage.save()
         return jsonify(review.to_dict()), 200
+
+
+@app_views.route('/places/<place_id>/reviews', methods=['POST'],
+                 strict_slashes=False)
+def post_review(place_id):
+    """review create reviw aaaa"""
+
+    reviews = request.get_json()
+
+    if not storage.get("Place", place_id):
+        abort(404)
+    if not reviews:
+        abort(400, 'Not a JSON')
+    if "user_id" not in reviews:
+        abort(400, 'Missing user_id')
+    if not storage.get("User", reviews["user_id"]):
+        abort(404)
+    if "text" not in reviews:
+        abort(400, "Missing text")
+
+    reviews["place_id"] = place_id
+    obj = Review(**reviews)
+    storage.new(obj)
+    storage.save()
+
+    return (jsonify(obj.to_dict()), 201)
