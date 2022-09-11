@@ -26,3 +26,16 @@ def get_review(place_id):
         list_all_reviews.append(review.to_dict())
 
     return jsonify(list_review)
+
+
+@app_views.route('/reviews/<string:review_id>',
+                 methods=['GET'],
+                 strict_slashes=False)
+def get_revieew(review_id):
+    """Retrieves a Review object
+    GET /api/v1/reviews/<review_id>"""
+    review = storage.get("Review", review_id)
+    if review:
+        return jsonify(review.to_dict())
+    else:
+        abort(404)
