@@ -73,3 +73,30 @@ def put_place(place_id):
                 setattr(places, key, value)
         storage.save()
         return jsonify(places.to_dict()), 200
+
+
+@app_views.route('/cities/<string:city_id>/places', methods=['POST'],
+                 strict_slashes=False)
+def post_place(city_id):
+    """create place post"""
+
+    places = request.get_json()
+
+    cities = storage.get("City", city_id)
+    if cities:
+        if not places:
+            abort(400, 'Not a JSON')
+        if "user_id" not in places:
+            abort(400, "Missing user_id")
+        if not storage.get("User", places["user_id"]):
+            abort(404)
+        if "name" not in places:
+            abort(400, 'Missing name')
+
+        places["city_id"] = city_id
+        obj = Place(**places)
+        storage.new(obj)
+        storage.save()
+
+        return (jsonify(obj.to_dict()), 201)
+    abort(404)
