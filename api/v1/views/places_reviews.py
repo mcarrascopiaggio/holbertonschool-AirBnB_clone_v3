@@ -3,39 +3,57 @@
 Create a new view for Review
 object that handles all default RESTFul API actions
 """
-from flask import Flask, jsonify, abort, request
+
 from api.v1.views import app_views
+from flask import jsonify
+from models import storage
+from models.city import City
+from models.user import User
 from models.place import Place
 from models.review import Review
-from models.user import User
-from models import storage
+from flask import abort
+from flask import request
 
 
-@app_views.route('/places/<string:place_id>/reviews', methods=['GET'],
-                 strict_slashes=False)
-def get_review(place_id):
+@app_views.route("/places/<place_id>/reviews", strict_slashes=False,
+                 methods=['GET'])
+def return_reviews(place_id):
     """
-    Retrieves the list of all Review objects of a Place:
+    Retrieves the list of all Review objects of a Place
     GET /api/v1/places/<place_id>/reviews
     """
-    list_all_reviews = []
     place = storage.get(Place, place_id)
-    if not place:
+    if place is None:
         abort(404)
+    reviews = []
     for review in place.reviews:
-        list_all_reviews.append(review.to_dict())
+        reviews.append(review.to_dict())
+    return jsonify(reviews)
 
-    return jsonify(list_review)
 
-
-@app_views.route('/reviews/<string:review_id>',
-                 methods=['GET'],
+@app_views.route('/reviews/<review_id>', methods=['GET'],
                  strict_slashes=False)
-def get_revieew(review_id):
-    """Retrieves a Review object
-    GET /api/v1/reviews/<review_id>"""
+def return_reviews_id(review_id):
+    """
+    Retrieves a Review object. : GET /api/v1/reviews/<review_id>
+    """
     review = storage.get(Review, review_id)
     if review is None:
         abort(404)
+    return jsonify(review.to_dict())
+
+
+@app_views.route('/reviews/<review_id>', methods=['DELETE'],
+                 strict_slashes=False)
+def delete_review_id(review_id):
+    """
+    Deletes a Review object: DELETE /api/v1/reviews/<review_id>
+    """
+    review = storage.get(Review, review_id)
+
+    if review is None:
+        abort(404)
     else:
-        return jsonify(review.to_dict())
+        storage.delete(review)
+        storage.save()
+        return jsonify({}), 200
