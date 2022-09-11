@@ -10,24 +10,22 @@ from models import storage
 from models.place import Place
 
 
-@app_views.route("/cities/<city_id>/places", methods=["GET"],
-                 strict_slashes=False)
-def places(city_id):
-    """
-    Retrieves the list of all User objects
-    """
-
-    city = storage.get("City", city_id)
-    places = []
-
+@app_views.route('/cities/<city_id>/places',
+                 methods=['GET'], strict_slashes=False)
+def all_places(city_id):
+    """Retrieves the list of all Place objects of a City
+    GET /api/v1/cities/<city_id>/places"""
+    list_places = []
+    city = storage.get(City, city_id)
     if city is None:
         abort(404)
 
-    for place in storage.all("Place").values():
+    places = storage.all(Place)
+    for place in places.values():
         if place.city_id == city_id:
-            places.append(place.to_dict())
+            list_places.append(places.to_dict())
 
-    return jsonify(places)
+    return jsonify(list_places)
 
 
 @app_views.route("/places/<place_id>", methods=["GET"],
