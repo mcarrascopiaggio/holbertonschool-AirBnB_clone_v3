@@ -60,15 +60,15 @@ def delete_place(place_id):
                  strict_slashes=False)
 def create_place(city_id):
     """Creates a City instance"""
-    body = request.get_json()
+    Places = request.get_json()
     user_id = body.get("user_id")
 
-    if body is None:
-        return make_response(jsonify({"error": "Not a JSON"}), 400)
-    elif "name" not in body.keys():
+    if Places is None:
+        abort(400, "Not a JSON")
+    elif "name" not in Places.keys():
         return make_response(jsonify({"error": "Missing name"}), 400)
-    elif "user_id" not in body.keys():
-        return make_response(jsonify({"error": "Missing user_id"}), 400)
+    elif "user_id" not in Places.keys():
+        return jsonify({"error": "Missing user_id"}), 400
 
     user = storage.get("User", user_id)
     if user is None:
@@ -78,9 +78,9 @@ def create_place(city_id):
     if city is None:
         abort(404)
 
-    place = Place(**body)
+    place = Place(**Places)
     storage.save()
-    return make_response(jsonify(place.to_dict()), 201)
+    return jsonify(place.to_dict()), 201
 
 
 @app_views.route("/places/<place_id>", methods=["PUT"], strict_slashes=False)
