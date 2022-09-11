@@ -28,19 +28,16 @@ def all_places(city_id):
     return jsonify(list_places)
 
 
-@app_views.route("/places/<place_id>", methods=["GET"],
+@app_views.route('/places/<place_id>',
+                 methods=['GET'],
                  strict_slashes=False)
-def place_by_id(place_id):
-    """
-    Retrieves the list of all State objects
-    """
-
-    place = storage.get("Place", place_id)
-
-    if place is None:
+def get_place(place_id):
+    """Retrieves a Place object. : GET /api/v1/places/<place_id>"""
+    theplace = storage.get("Place", place_id)
+    if theplace is None:
         abort(404)
     else:
-        return jsonify(place.to_dict())
+        return jsonify(theplace.to_dict())
 
 
 @app_views.route("/places/<place_id>", methods=["DELETE"],
