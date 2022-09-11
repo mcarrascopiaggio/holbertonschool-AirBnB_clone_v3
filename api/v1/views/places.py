@@ -16,11 +16,11 @@ def all_places(city_id):
     """Retrieves the list of all Place objects of a City
     GET /api/v1/cities/<city_id>/places"""
     list_places = []
-    city = storage.get(City, city_id)
+    city = storage.get("City", city_id)
     if city is None:
         abort(404)
 
-    places = storage.all(Place)
+    places = storage.all("Place")
     for place in places.values():
         if place.city_id == city_id:
             list_places.append(place.to_dict())
