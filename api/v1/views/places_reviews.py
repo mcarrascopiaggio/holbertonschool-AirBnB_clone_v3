@@ -57,3 +57,25 @@ def delete_review_id(review_id):
         storage.delete(review)
         storage.save()
         return jsonify({}), 200
+
+
+@app_views.route('/reviews/<review_id>', methods=['PUT'], strict_slashes=False)
+def update_review(review_id):
+    """
+    Updates a Review object: PUT /api/v1/reviews/<review_id>
+    """
+    review = storage.get(Review, review_id)
+    if review is None:
+        abort(404)
+    update_r = request.get_json()
+    if update_r is None:
+        abort(400, "Not a JSON")
+    else:
+        for key, value in update_r.items():
+            if key in ['id', 'user_id', 'place_id',
+                       'created_at', 'updated_at']:
+                pass
+            else:
+                setattr(review, key, value)
+        storage.save()
+        return jsonify(review.to_dict()), 200
