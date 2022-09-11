@@ -14,11 +14,12 @@ from models.place import Place
 def all_places(city_id):
     """Retrieves the list of all Place objects of a City
     GET /api/v1/cities/<city_id>/places"""
-    places = storage.all(Place)
     list_places = []
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
+
+    places = storage.all(Place)
     for place in places.values():
         if place.city_id == city_id:
             list_places.append(places.to_dict())
@@ -60,7 +61,7 @@ def put_place(place_id):
     places = storage.get(Place, place_id)
     if places is None:
         abort(404)
-    update_places = request.get_json(silent=True)
+    update_places = request.geit_json()
     if update_places is None:
         abort(400, "Not a JSON")
     else:
